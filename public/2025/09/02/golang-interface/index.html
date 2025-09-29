@@ -9,7 +9,7 @@
   <meta name="description" content="1. 在使用接口的地方定义接口带来的优点：  各个包之间松耦合，增强了灵活性，简化了测试 增加了代码灵活性 遵循依赖倒置原则  2. 让接口简单专用好的接口设计应该遵循：  只包含所需功能依赖的必要方法 容易实现及理解 可重用、可替换  3. 使用组合来实现更复杂的接口 提升可重用性，更加清晰 简化了维护和扩展 与go的设计哲学保持一致  4. 理解golang中接口的0值接口nil和纯nil不一">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Golang interface best practice">
-<meta property="og:url" content="http://example.com/2025/09/02/golang-interface/index.html">
+<meta property="og:url" content="https://f0resee.github.io/2025/09/02/golang-interface/index.html">
 <meta property="og:site_name" content="学习笔记">
 <meta property="og:description" content="1. 在使用接口的地方定义接口带来的优点：  各个包之间松耦合，增强了灵活性，简化了测试 增加了代码灵活性 遵循依赖倒置原则  2. 让接口简单专用好的接口设计应该遵循：  只包含所需功能依赖的必要方法 容易实现及理解 可重用、可替换  3. 使用组合来实现更复杂的接口 提升可重用性，更加清晰 简化了维护和扩展 与go的设计哲学保持一致  4. 理解golang中接口的0值接口nil和纯nil不一">
 <meta property="og:locale" content="en_US">
@@ -71,7 +71,7 @@
         <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
       </nav>
       <div id="search-form-wrap">
-        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="http://example.com"></form>
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://f0resee.github.io"></form>
       </div>
     </div>
   </div>
@@ -122,7 +122,7 @@
       
     </div>
     <footer class="article-footer">
-      <a data-url="http://example.com/2025/09/02/golang-interface/" data-id="cmf2mt9em00002ruz0cf1hnkp" data-title="Golang interface best practice" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://f0resee.github.io/2025/09/02/golang-interface/" data-id="cmf2mt9em00002ruz0cf1hnkp" data-title="Golang interface best practice" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -166,7 +166,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tags</h3>
     <div class="widget">
-      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/faas-serverless/" rel="tag">faas serverless</a></li></ul>
     </div>
   </div>
 
@@ -176,7 +176,7 @@
   <div class="widget-wrap">
     <h3 class="widget-title">Tag Cloud</h3>
     <div class="widget tagcloud">
-      <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/Kubernetes/" style="font-size: 10px;">Kubernetes</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a>
+      <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/Kubernetes/" style="font-size: 10px;">Kubernetes</a> <a href="/tags/Linux/" style="font-size: 10px;">Linux</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/faas-serverless/" style="font-size: 10px;">faas serverless</a>
     </div>
   </div>
 
@@ -196,6 +196,10 @@
     <h3 class="widget-title">Recent Posts</h3>
     <div class="widget">
       <ul>
+        
+          <li>
+            <a href="/2025/09/28/fuction-as-a-service/">Function as a service</a>
+          </li>
         
           <li>
             <a href="/2025/09/08/web-auth/">Authentication and authorization</a>
