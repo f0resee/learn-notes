@@ -99,7 +99,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
+        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a></p>
+<h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
 <p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
@@ -113,7 +114,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
 
 <p>安装cgroup工具</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install  libcgroup libcgroup-tools</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install cgroup-tools</span><br></pre></td></tr></table></figure>
 
 <h2 id="cgroup-子系统"><a href="#cgroup-子系统" class="headerlink" title="cgroup 子系统"></a>cgroup 子系统</h2><ul>
 <li>cpu: 限制cgroup的cpu使用量</li>

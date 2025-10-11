@@ -6,15 +6,15 @@
   
   <title>linux-cgroups | 学习笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="cgroupcgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubreboot  cgrou">
+  <meta name="description" content="cgroupCgroup原理及使用 cgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubr">
 <meta property="og:type" content="article">
 <meta property="og:title" content="linux-cgroups">
 <meta property="og:url" content="https://f0resee.github.io/2025/10/11/linux-cgroups/index.html">
 <meta property="og:site_name" content="学习笔记">
-<meta property="og:description" content="cgroupcgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubreboot  cgrou">
+<meta property="og:description" content="cgroupCgroup原理及使用 cgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubr">
 <meta property="og:locale" content="en_US">
 <meta property="article:published_time" content="2025-10-11T12:15:42.000Z">
-<meta property="article:modified_time" content="2025-10-11T16:13:07.898Z">
+<meta property="article:modified_time" content="2025-10-11T16:52:04.548Z">
 <meta property="article:author" content="linyingwen">
 <meta property="article:tag" content="Linux">
 <meta name="twitter:card" content="summary">
@@ -100,7 +100,8 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
+        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a></p>
+<h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
 <p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
@@ -114,7 +115,7 @@
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
 
 <p>安装cgroup工具</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install  libcgroup libcgroup-tools</span><br></pre></td></tr></table></figure>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install cgroup-tools</span><br></pre></td></tr></table></figure>
 
 <h2 id="cgroup-子系统"><a href="#cgroup-子系统" class="headerlink" title="cgroup 子系统"></a>cgroup 子系统</h2><ul>
 <li>cpu: 限制cgroup的cpu使用量</li>

@@ -4,6 +4,7 @@ date: 2025-10-11 20:15:42
 tags: Linux
 ---
 #  cgroup
+[Cgroup原理及使用](https://www.cnblogs.com/zhrx/p/16388175.html)
 ## cgroup v1和cgroup v2
 怎么查看是v1还是v2：
 ```sh
@@ -34,7 +35,7 @@ cat /proc/PID/cgroup
 
 安装cgroup工具
 ```
-apt install  libcgroup libcgroup-tools
+apt install cgroup-tools
 ```
 
 ## cgroup 子系统
