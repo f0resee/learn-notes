@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  
+  
+  <title>linux-cgroups | 学习笔记</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <meta name="description" content="cgroupcgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubreboot  cgrou">
+<meta property="og:type" content="article">
+<meta property="og:title" content="linux-cgroups">
+<meta property="og:url" content="https://f0resee.github.io/2025/10/11/linux-cgroups/index.html">
+<meta property="og:site_name" content="学习笔记">
+<meta property="og:description" content="cgroupcgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行 12update-grubreboot  cgrou">
+<meta property="og:locale" content="en_US">
+<meta property="article:published_time" content="2025-10-11T12:15:42.000Z">
+<meta property="article:modified_time" content="2025-10-11T16:13:07.898Z">
+<meta property="article:author" content="linyingwen">
+<meta property="article:tag" content="Linux">
+<meta name="twitter:card" content="summary">
+  
+    <link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
+  
+  
+    <link rel="shortcut icon" href="/favicon.png">
+  
+  
+  
+<link rel="stylesheet" href="/css/style.css">
+
+  
+    
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.min.css">
+
+  
+  
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/fork-awesome@1.2.0/css/fork-awesome.min.css">
+
+<meta name="generator" content="Hexo 7.3.0"></head>
+
+<body>
+  <div id="container">
+    <div id="wrap">
+      <header id="header">
+  <div id="banner"></div>
+  <div id="header-outer" class="outer">
+    <div id="header-title" class="inner">
+      <h1 id="logo-wrap">
+        <a href="/" id="logo">学习笔记</a>
+      </h1>
+      
+        <h2 id="subtitle-wrap">
+          <a href="/" id="subtitle">coding</a>
+        </h2>
+      
+    </div>
+    <div id="header-inner" class="inner">
+      <nav id="main-nav">
+        <a id="main-nav-toggle" class="nav-icon"><span class="fa fa-bars"></span></a>
+        
+          <a class="main-nav-link" href="/">Home</a>
+        
+          <a class="main-nav-link" href="/archives">Archives</a>
+        
+      </nav>
+      <nav id="sub-nav">
+        
+        
+          <a class="nav-icon" href="/atom.xml" title="RSS Feed"><span class="fa fa-rss"></span></a>
+        
+        <a class="nav-icon nav-search-btn" title="Search"><span class="fa fa-search"></span></a>
+      </nav>
+      <div id="search-form-wrap">
+        <form action="//google.com/search" method="get" accept-charset="UTF-8" class="search-form"><input type="search" name="q" class="search-form-input" placeholder="Search"><button type="submit" class="search-form-submit">&#xF002;</button><input type="hidden" name="sitesearch" value="https://f0resee.github.io"></form>
+      </div>
+    </div>
+  </div>
+</header>
+
+      <div class="outer">
+        <section id="main"><article id="post-linux-cgroups" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
+  <div class="article-meta">
+    <a href="/2025/10/11/linux-cgroups/" class="article-date">
+  <time class="dt-published" datetime="2025-10-11T12:15:42.000Z" itemprop="datePublished">2025-10-11</time>
+</a>
+    
+  </div>
+  <div class="article-inner">
+    
+    
+      <header class="article-header">
+        
+  
+    <h1 class="p-name article-title" itemprop="headline name">
+      linux-cgroups
+    </h1>
+  
+
+      </header>
+    
+    <div class="e-content article-entry" itemprop="articleBody">
+      
+        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
+<p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+
+<h2 id="cgroup-v1使用"><a href="#cgroup-v1使用" class="headerlink" title="cgroup v1使用"></a>cgroup v1使用</h2><p>限制PID这个进程只能使用0.5核。</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/cpu/test</span><br><span class="line"><span class="built_in">echo</span> 50000 &gt; /sys/fs/cgroup/cpu/zz/cpu.cfs_quota_us</span><br><span class="line"><span class="built_in">echo</span> PID &gt; /sys/fs/cgroup/cpu/zz/cgroup.procs</span><br></pre></td></tr></table></figure>
+<p>查看cgroup个数</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/cgroups|column -t</span><br></pre></td></tr></table></figure>
+
+<p>查看进程的cgroup信息</p>
+<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
+
+<p>安装cgroup工具</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install  libcgroup libcgroup-tools</span><br></pre></td></tr></table></figure>
+
+<h2 id="cgroup-子系统"><a href="#cgroup-子系统" class="headerlink" title="cgroup 子系统"></a>cgroup 子系统</h2><ul>
+<li>cpu: 限制cgroup的cpu使用量</li>
+<li>cpuact: 统计cgroup的cpu使用情况</li>
+<li>cpuset: 设置cgroup能使用的cpu核内存节点</li>
+<li>memory: 设置cgroup能使用的内存</li>
+<li>blkio: 限制cgroup的io使用</li>
+</ul>
+<h2 id="使用systemd设置cgroup"><a href="#使用systemd设置cgroup" class="headerlink" title="使用systemd设置cgroup"></a>使用systemd设置cgroup</h2><p>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># dd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=dd</span><br><span class="line">ConditionFileIsExecutable=/usr/libexec/dd.sh</span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/usr/libexec/dd.sh</span><br><span class="line">Slice=zhrx.slice</span><br><span class="line">CPUAccounting=yes</span><br><span class="line">CPUQuota=40%</span><br><span class="line">MemoryAccounting=yes</span><br><span class="line">MemoryMax=200M</span><br><span class="line">TasksAccounting=yes</span><br><span class="line">BlockIOAccounting=yes</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+      
+    </div>
+    <footer class="article-footer">
+      <a data-url="https://f0resee.github.io/2025/10/11/linux-cgroups/" data-id="cmgmh6jvq0000fuuzc2sj8vw9" data-title="linux-cgroups" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      
+      
+      
+  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li></ul>
+
+    </footer>
+  </div>
+  
+    
+<nav id="article-nav">
+  
+  
+    <a href="/2025/09/28/fuction-as-a-service/" id="article-nav-older" class="article-nav-link-wrap">
+      <strong class="article-nav-caption">Older</strong>
+      <div class="article-nav-title">Function as a service</div>
+    </a>
+  
+</nav>
+
+  
+</article>
+
+
+</section>
+        
+          <aside id="sidebar">
+  
+    
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tags</h3>
+    <div class="widget">
+      <ul class="tag-list" itemprop="keywords"><li class="tag-list-item"><a class="tag-list-link" href="/tags/Golang/" rel="tag">Golang</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Kubernetes/" rel="tag">Kubernetes</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Linux/" rel="tag">Linux</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/Web/" rel="tag">Web</a></li><li class="tag-list-item"><a class="tag-list-link" href="/tags/faas/" rel="tag">faas</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Tag Cloud</h3>
+    <div class="widget tagcloud">
+      <a href="/tags/Golang/" style="font-size: 10px;">Golang</a> <a href="/tags/Kubernetes/" style="font-size: 10px;">Kubernetes</a> <a href="/tags/Linux/" style="font-size: 20px;">Linux</a> <a href="/tags/Web/" style="font-size: 10px;">Web</a> <a href="/tags/faas/" style="font-size: 10px;">faas</a>
+    </div>
+  </div>
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Archives</h3>
+    <div class="widget">
+      <ul class="archive-list"><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/10/">October 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/09/">September 2025</a></li><li class="archive-list-item"><a class="archive-list-link" href="/archives/2025/08/">August 2025</a></li></ul>
+    </div>
+  </div>
+
+
+  
+    
+  <div class="widget-wrap">
+    <h3 class="widget-title">Recent Posts</h3>
+    <div class="widget">
+      <ul>
+        
+          <li>
+            <a href="/2025/10/11/linux-cgroups/">linux-cgroups</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/28/fuction-as-a-service/">Function as a service</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/08/web-auth/">Authentication and authorization</a>
+          </li>
+        
+          <li>
+            <a href="/2025/09/02/golang-interface/">Golang interface best practice</a>
+          </li>
+        
+          <li>
+            <a href="/2025/08/07/kubernetes-memory-manager/">Kubernetes NUMA-aware Memory Manager</a>
+          </li>
+        
+      </ul>
+    </div>
+  </div>
+
+  
+</aside>
+        
+      </div>
+      <footer id="footer">
+  
+  <div class="outer">
+    <div id="footer-info" class="inner">
+      
+      &copy; 2025 linyingwen<br>
+      Powered by <a href="https://hexo.io/" target="_blank">Hexo</a>
+    </div>
+  </div>
+</footer>
+
+    </div>
+    <nav id="mobile-nav">
+  
+    <a href="/" class="mobile-nav-link">Home</a>
+  
+    <a href="/archives" class="mobile-nav-link">Archives</a>
+  
+</nav>
+    
+
+
+<script src="/js/jquery-3.6.4.min.js"></script>
+
+
+
+  
+<script src="/fancybox/jquery.fancybox.min.js"></script>
+
+
+
+
+<script src="/js/script.js"></script>
+
+
+
+
+
+  </div>
+</body>
+</html>

@@ -4,19 +4,16 @@
   <meta charset="utf-8">
   
   
-  <title>Authentication and authorization | 学习笔记</title>
+  <title>Archives: 2025/10 | 学习笔记</title>
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-  <meta name="description" content="认证（Authentication）认证要解决的是系统如何正确的分辨出操作用户的真实身份。三种层面的认证：  通信信道上的认证：在网络传输（Network）场景中的典型是基于SSL&#x2F;TLS传输安全层的认证。 通信协议上的认证：在互联网（Internet）场景中的典型是基于HTTP协议的认证。IETF定义的一些HTTP认证方案： Basic：HTTP请求header添加base64加密后的">
-<meta property="og:type" content="article">
-<meta property="og:title" content="Authentication and authorization">
-<meta property="og:url" content="https://f0resee.github.io/2025/09/08/web-auth/index.html">
+  <meta name="description" content="coding note">
+<meta property="og:type" content="website">
+<meta property="og:title" content="学习笔记">
+<meta property="og:url" content="https://f0resee.github.io/archives/2025/10/index.html">
 <meta property="og:site_name" content="学习笔记">
-<meta property="og:description" content="认证（Authentication）认证要解决的是系统如何正确的分辨出操作用户的真实身份。三种层面的认证：  通信信道上的认证：在网络传输（Network）场景中的典型是基于SSL&#x2F;TLS传输安全层的认证。 通信协议上的认证：在互联网（Internet）场景中的典型是基于HTTP协议的认证。IETF定义的一些HTTP认证方案： Basic：HTTP请求header添加base64加密后的">
+<meta property="og:description" content="coding note">
 <meta property="og:locale" content="en_US">
-<meta property="article:published_time" content="2025-09-08T14:39:36.000Z">
-<meta property="article:modified_time" content="2025-09-08T16:21:43.098Z">
 <meta property="article:author" content="linyingwen">
-<meta property="article:tag" content="Web">
 <meta name="twitter:card" content="summary">
   
     <link rel="alternate" href="/atom.xml" title="学习笔记" type="application/atom+xml">
@@ -78,87 +75,39 @@
 </header>
 
       <div class="outer">
-        <section id="main"><article id="post-web-auth" class="h-entry article article-type-post" itemprop="blogPost" itemscope itemtype="https://schema.org/BlogPosting">
-  <div class="article-meta">
-    <a href="/2025/09/08/web-auth/" class="article-date">
-  <time class="dt-published" datetime="2025-09-08T14:39:36.000Z" itemprop="datePublished">2025-09-08</time>
-</a>
-    
-  </div>
-  <div class="article-inner">
-    
-    
-      <header class="article-header">
-        
+        <section id="main">
   
-    <h1 class="p-name article-title" itemprop="headline name">
-      Authentication and authorization
+  
+    
+    
+      
+      
+      <section class="archives-wrap">
+        <div class="archive-year-wrap">
+          <a href="/archives/2025" class="archive-year">2025</a>
+        </div>
+        <div class="archives">
+    
+    <article class="archive-article archive-type-post">
+  <div class="archive-article-inner">
+    <header class="archive-article-header">
+      <a href="/2025/10/11/linux-cgroups/" class="archive-article-date">
+  <time class="dt-published" datetime="2025-10-11T12:15:42.000Z" itemprop="datePublished">Oct 11</time>
+</a>
+      
+  
+    <h1 itemprop="name">
+      <a class="archive-article-title" href="/2025/10/11/linux-cgroups/">linux-cgroups</a>
     </h1>
   
 
-      </header>
-    
-    <div class="e-content article-entry" itemprop="articleBody">
-      
-        <h1 id="认证（Authentication）"><a href="#认证（Authentication）" class="headerlink" title="认证（Authentication）"></a>认证（Authentication）</h1><p>认证要解决的是系统如何正确的分辨出操作用户的真实身份。三种层面的认证：</p>
-<ol>
-<li>通信信道上的认证：在网络传输（Network）场景中的典型是基于SSL&#x2F;TLS传输安全层的认证。</li>
-<li>通信协议上的认证：在互联网（Internet）场景中的典型是基于HTTP协议的认证。IETF定义的一些HTTP认证方案：<ul>
-<li>Basic：HTTP请求header添加base64加密后的用户名和密码</li>
-<li>Digest：改进的basic（用户名和密码加盐）</li>
-<li>Bearer：基于Oauth2规范来完成认证</li>
-<li>HOBA：基于自签名证书的认证方案</li>
-</ul>
-</li>
-<li>通信内容上的认证：在万维网（World Wide Web）场景中的典型是基于Web内容的认证。<ul>
-<li>WebAuthn</li>
-</ul>
-</li>
-</ol>
-<h1 id="授权（Authorization）"><a href="#授权（Authorization）" class="headerlink" title="授权（Authorization）"></a>授权（Authorization）</h1><p>授权要解决的是系统如何控制一个用户该看到哪些数据、能操作哪些功能。典型的授权方案：</p>
-<ol>
-<li>RBAC（Role-Based Access Control）：用户（user）隶属角色（role），角色拥有许可（permission）操作资源（resource）。</li>
-<li>ABAC（Attribute-Based Access Control）</li>
-<li>ACL（Access Control List）</li>
-<li>RBAC（Rule-Based Access Control）</li>
-<li>MAC（Mandatory Access Control）</li>
-<li>Oauth2：面向解决第三方应用的认证授权协议</li>
-</ol>
-
-      
-    </div>
-    <footer class="article-footer">
-      <a data-url="https://f0resee.github.io/2025/09/08/web-auth/" data-id="cmfbbxuq60000gxuz1tiz2jr1" data-title="Authentication and authorization" class="article-share-link"><span class="fa fa-share">Share</span></a>
-      
-      
-      
-  <ul class="article-tag-list" itemprop="keywords"><li class="article-tag-list-item"><a class="article-tag-list-link" href="/tags/Web/" rel="tag">Web</a></li></ul>
-
-    </footer>
+    </header>
   </div>
-  
-    
-<nav id="article-nav">
-  
-    <a href="/2025/09/28/fuction-as-a-service/" id="article-nav-newer" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Newer</strong>
-      <div class="article-nav-title">
-        
-          Function as a service
-        
-      </div>
-    </a>
-  
-  
-    <a href="/2025/09/02/golang-interface/" id="article-nav-older" class="article-nav-link-wrap">
-      <strong class="article-nav-caption">Older</strong>
-      <div class="article-nav-title">Golang interface best practice</div>
-    </a>
-  
-</nav>
-
-  
 </article>
+  
+  
+    </div></section>
+  
 
 
 </section>
