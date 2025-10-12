@@ -1,7 +1,8 @@
 ---
 title: Linux cgroups
 date: 2025-10-11 20:15:42
-tags: Linux
+tags: [Linux, cgroup]
+categories: Linux
 ---
 #  cgroup
 [Cgroup原理及使用](https://www.cnblogs.com/zhrx/p/16388175.html)
