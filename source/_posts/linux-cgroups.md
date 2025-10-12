@@ -1,10 +1,11 @@
 ---
-title: linux-cgroups
+title: Linux cgroups
 date: 2025-10-11 20:15:42
 tags: Linux
 ---
 #  cgroup
 [Cgroup原理及使用](https://www.cnblogs.com/zhrx/p/16388175.html)
+[Linux资源管理之cgroups简介](https://tech.meituan.com/2015/03/31/cgroups.html)
 ## cgroup v1和cgroup v2
 怎么查看是v1还是v2：
 ```sh
@@ -32,6 +33,7 @@ cat /proc/cgroups|column -t
 ```sh
 cat /proc/PID/cgroup
 ```
+
 
 安装cgroup工具
 ```
@@ -65,4 +67,10 @@ TasksAccounting=yes
 BlockIOAccounting=yes
 [Install]
 WantedBy=multi-user.target
+```
+
+
+查看cgroup树形结构
+```
+systemd-cgls
 ```

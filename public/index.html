@@ -91,7 +91,7 @@
         
   
     <h1 itemprop="name">
-      <a class="p-name article-title" href="/2025/10/11/linux-cgroups/">linux-cgroups</a>
+      <a class="p-name article-title" href="/2025/10/11/linux-cgroups/">Linux cgroups</a>
     </h1>
   
 
@@ -99,7 +99,7 @@
     
     <div class="e-content article-entry" itemprop="articleBody">
       
-        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a></p>
+        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a><br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">Linux资源管理之cgroups简介</a></p>
 <h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
 <p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
@@ -113,6 +113,7 @@
 <p>查看进程的cgroup信息</p>
 <figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
 
+
 <p>安装cgroup工具</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install cgroup-tools</span><br></pre></td></tr></table></figure>
 
@@ -125,10 +126,14 @@
 </ul>
 <h2 id="使用systemd设置cgroup"><a href="#使用systemd设置cgroup" class="headerlink" title="使用systemd设置cgroup"></a>使用systemd设置cgroup</h2><p>示例</p>
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># dd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=dd</span><br><span class="line">ConditionFileIsExecutable=/usr/libexec/dd.sh</span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/usr/libexec/dd.sh</span><br><span class="line">Slice=zhrx.slice</span><br><span class="line">CPUAccounting=yes</span><br><span class="line">CPUQuota=40%</span><br><span class="line">MemoryAccounting=yes</span><br><span class="line">MemoryMax=200M</span><br><span class="line">TasksAccounting=yes</span><br><span class="line">BlockIOAccounting=yes</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
+
+
+<p>查看cgroup树形结构</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd-cgls</span><br></pre></td></tr></table></figure>
       
     </div>
     <footer class="article-footer">
-      <a data-url="https://f0resee.github.io/2025/10/11/linux-cgroups/" data-id="cmgmh6jvq0000fuuzc2sj8vw9" data-title="linux-cgroups" class="article-share-link"><span class="fa fa-share">Share</span></a>
+      <a data-url="https://f0resee.github.io/2025/10/11/linux-cgroups/" data-id="cmgmh6jvq0000fuuzc2sj8vw9" data-title="Linux cgroups" class="article-share-link"><span class="fa fa-share">Share</span></a>
       
       
       
@@ -474,7 +479,7 @@
       <ul>
         
           <li>
-            <a href="/2025/10/11/linux-cgroups/">linux-cgroups</a>
+            <a href="/2025/10/11/linux-cgroups/">Linux cgroups</a>
           </li>
         
           <li>
