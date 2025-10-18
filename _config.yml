@@ -104,4 +104,4 @@ deploy:
   type: 'git'
   repo: 'git@github.com:f0resee/f0resee.github.io.git'
   branch: 'main'
-  message: 'add k8s cluster init'
+  message: 'refactor k8s cluster init'
