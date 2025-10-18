@@ -158,6 +158,81 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/18/kubernetes-concepts/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="f0resee">
+      <meta itemprop="description" content="coding note">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="学习笔记">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2025/10/18/kubernetes-concepts/" class="post-title-link" itemprop="url">Kubernetes concepts</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+              
+
+              <time title="创建时间：2025-10-18 15:40:35 / 修改时间：18:50:43" itemprop="dateCreated datePublished" datetime="2025-10-18T15:40:35+08:00">2025-10-18</time>
+            </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
+                </span>
+            </span>
+
+          
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h1 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h1><p>假设我们有一个无状态的web应用，且这个应用的流量随着业务的发展可能越来越大。为了将这个应用部署并对外提供服务，最简单的方式是直接部署到主机上，但是这样有一个问题是可能需要在每台主机上都部署一遍应用的依赖，再部署应用，操作繁琐。为了解决这个问题，可以在单机上做容器化部署，将应用及其依赖打包进镜像，然后在每台主机上通过containerd&#x2F;docker运行应用，但是这种方式也有一些问题，例如怎么保证实例数量不变少，主机故障了如何屏蔽主机并在其他主机拉起实例。而k8s就是一套在多主机上管理容器化应用的容器编排系统，根据用户设定的service&#x2F;deployment spec，将预期的pod调度到不同的主机上，并保障实例数量符合预期，一方面省去了在每台机器上部署应用的重复操作提高了发布效率，另一方面通过部署、探活等机制提高了应用的可靠性。</p>
+<h1 id="Workload"><a href="#Workload" class="headerlink" title="Workload"></a>Workload</h1><h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/pods/">kubernetes官方文档</a></p>
+<p>Pod是kubernetes中可以部署的最小单元<br>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx:1.14.2</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><p>无状态应用，实例可以互相替换</p>
+<h2 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h2><p>有状态应用，Pod有固定的名称和网络标识、按顺序创建&#x2F;删除</p>
+<h2 id="Daemonset"><a href="#Daemonset" class="headerlink" title="Daemonset"></a>Daemonset</h2><p>节点级别的守护进程</p>
+<h2 id="Job-CronJob"><a href="#Job-CronJob" class="headerlink" title="Job&#x2F;CronJob"></a>Job&#x2F;CronJob</h2><p>一次性&#x2F;定时任务</p>
+
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/18/kubernetes-cluster-init/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -183,7 +258,7 @@
               <span class="post-meta-item-text">发表于</span>
               
 
-              <time title="创建时间：2025-10-18 09:46:59 / 修改时间：11:40:48" itemprop="dateCreated datePublished" datetime="2025-10-18T09:46:59+08:00">2025-10-18</time>
+              <time title="创建时间：2025-10-18 09:46:59 / 修改时间：21:37:17" itemprop="dateCreated datePublished" datetime="2025-10-18T09:46:59+08:00">2025-10-18</time>
             </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -239,7 +314,7 @@
 <p>minikube stop</p>
 <p>minikube delete</p>
 <p>minikube start –kubernetes-version&#x3D;v1.23.8</p>
-<h2 id="二、侧使用yaml"><a href="#二、侧使用yaml" class="headerlink" title="二、侧使用yaml"></a>二、侧使用yaml</h2><h3 id="1-Pod"><a href="#1-Pod" class="headerlink" title="1. Pod"></a>1. Pod</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mynginx</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mynginx</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
+<h2 id="二、测试用yaml"><a href="#二、测试用yaml" class="headerlink" title="二、测试用yaml"></a>二、测试用yaml</h2><h3 id="1-Pod"><a href="#1-Pod" class="headerlink" title="1. Pod"></a>1. Pod</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">mynginx</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">    <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">mynginx</span></span><br><span class="line">      <span class="attr">image:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
 
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">run:</span> <span class="string">myapp</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">myapp</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">image:</span> <span class="string">tomcat</span></span><br><span class="line">    <span class="attr">name:</span> <span class="string">tomcat</span></span><br></pre></td></tr></table></figure>
 <h3 id="2-Deployment"><a href="#2-Deployment" class="headerlink" title="2. Deployment"></a>2. Deployment</h3><figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">apps/v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Deployment</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">replicas:</span> <span class="number">3</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">matchLabels:</span></span><br><span class="line">      <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">template:</span></span><br><span class="line">    <span class="attr">metadata:</span></span><br><span class="line">      <span class="attr">labels:</span></span><br><span class="line">        <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">    <span class="attr">spec:</span></span><br><span class="line">      <span class="attr">containers:</span></span><br><span class="line">      <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">nginx</span></span><br><span class="line">        <span class="attr">image:</span> <span class="string">nginx</span></span><br></pre></td></tr></table></figure>
@@ -294,7 +369,7 @@
                   <i class="far fa-calendar-check"></i>
                 </span>
                 <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-17 00:10:04" itemprop="dateModified" datetime="2025-10-17T00:10:04+08:00">2025-10-17</time>
+                <time title="修改时间：2025-10-18 22:05:48" itemprop="dateModified" datetime="2025-10-18T22:05:48+08:00">2025-10-18</time>
               </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
@@ -317,13 +392,37 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h1 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h1><h2 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h2><p>在node上，kubelet是一个systemd拉起的service，可以通过<code>systemctl status kubelet.service</code>查看相关信息。两个比较重要的文件：</p>
+          <h1 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h1><h2 id="kubelet-systemd-service"><a href="#kubelet-systemd-service" class="headerlink" title="kubelet systemd service"></a>kubelet systemd service</h2><p>在node上，kubelet是一个systemd拉起的service，可以通过<code>systemctl status kubelet.service</code>查看相关信息。两个比较重要的文件：</p>
 <ul>
 <li>&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;kubelet.service</li>
 <li>&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;10-kubeadm.conf</li>
 </ul>
 <p>其中第二个文件中的内容会对第一个文件进行部分覆盖，因此完整的启动命令其实取决于这两个文件。</p>
-<h2 id="配置拓扑调度"><a href="#配置拓扑调度" class="headerlink" title="配置拓扑调度"></a>配置拓扑调度</h2>
+<h2 id="kubelet配置文件"><a href="#kubelet配置文件" class="headerlink" title="kubelet配置文件"></a>kubelet配置文件</h2><ul>
+<li>&#x2F;var&#x2F;lib&#x2F;kubelet&#x2F;config.yaml</li>
+</ul>
+<h2 id="功能配置"><a href="#功能配置" class="headerlink" title="功能配置"></a>功能配置</h2><p>Pod Qos:</p>
+<p>Guaranteed：</p>
+<ul>
+<li>pod中的每个容器都要有memory limit和request</li>
+<li>pod中的每个容器的memory limit和request相等</li>
+<li>pod中的每个容器都要有cpu limit和request</li>
+<li>pod中的每个容器的cpu limit和request相等</li>
+</ul>
+<p>Burstable：</p>
+<ul>
+<li>没有达到Guaranteed的标准</li>
+<li>pod中至少有一个容器配置了cpu&#x2F;memory的reuest&#x2F;limit</li>
+</ul>
+<p>BestEffort：</p>
+<ul>
+<li>没达到Burstable标准：pod中任意一个容器都没有配置cpu&#x2F;memory的request&#x2F;limit</li>
+</ul>
+<h3 id="配置cpu、memory、topology-manager"><a href="#配置cpu、memory、topology-manager" class="headerlink" title="配置cpu、memory、topology manager"></a>配置cpu、memory、topology manager</h3><p><code>/var/lib/kubelet/config.yaml</code></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">cpuManagerPolicy:</span> <span class="string">static</span></span><br><span class="line"><span class="attr">memoryManagerPolicy:</span> <span class="string">Static</span></span><br><span class="line"><span class="attr">topologyManagerPolicy:</span> <span class="string">best-effort</span></span><br><span class="line"><span class="attr">topologyManagerScope:</span> <span class="string">container</span></span><br><span class="line"><span class="attr">systemReserved:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">500Mi</span></span><br><span class="line"><span class="attr">kubeReserved:</span></span><br><span class="line">  <span class="attr">cpu:</span> <span class="string">500m</span></span><br><span class="line">  <span class="attr">memory:</span> <span class="string">500Mi</span></span><br><span class="line"><span class="attr">reservedMemory:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">numaNode:</span> <span class="number">0</span></span><br><span class="line">    <span class="attr">limits:</span></span><br><span class="line">      <span class="attr">memory:</span> <span class="string">1100Mi</span></span><br><span class="line"><span class="attr">evictionHard:</span></span><br><span class="line">  <span class="attr">memory.available:</span> <span class="string">200Mi</span></span><br></pre></td></tr></table></figure>
+<p>测试pod</p>
+<p><a target="_blank" rel="noopener" href="https://hub.docker.com/">docker hub</a></p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Pod</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-pod</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">containers:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">name:</span> <span class="string">my-container</span></span><br><span class="line">    <span class="attr">image:</span> <span class="string">nginx</span></span><br><span class="line">    <span class="attr">resources:</span></span><br><span class="line">      <span class="attr">requests:</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;1000m&quot;</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;400Mi&quot;</span></span><br><span class="line">      <span class="attr">limits:</span></span><br><span class="line">        <span class="attr">cpu:</span> <span class="string">&quot;1000m&quot;</span></span><br><span class="line">        <span class="attr">memory:</span> <span class="string">&quot;400Mi&quot;</span></span><br></pre></td></tr></table></figure>
       
     </div>
 
@@ -908,7 +1007,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">8</span>
+          <span class="site-state-item-count">9</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>

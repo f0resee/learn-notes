@@ -20,21 +20,20 @@
     var CONFIG = {"hostname":"f0resee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="cgroupCgroup原理及使用Linux资源管理之cgroups简介 cgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后">
+  <meta name="description" content="设计理念假设我们有一个无状态的web应用，且这个应用的流量随着业务的发展可能越来越大。为了将这个应用部署并对外提供服务，最简单的方式是直接部署到主机上，但是这样有一个问题是可能需要在每台主机上都部署一遍应用的依赖，再部署应用，操作繁琐。为了解决这个问题，可以在单机上做容器化部署，将应用及其依赖打包进镜像，然后在每台主机上通过containerd&#x2F;docker运行应用，但是这种方式也有一些">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Linux cgroups">
-<meta property="og:url" content="https://f0resee.github.io/2025/10/11/linux-cgroups/index.html">
+<meta property="og:title" content="Kubernetes concepts">
+<meta property="og:url" content="https://f0resee.github.io/2025/10/18/kubernetes-concepts/index.html">
 <meta property="og:site_name" content="学习笔记">
-<meta property="og:description" content="cgroupCgroup原理及使用Linux资源管理之cgroups简介 cgroup v1和cgroup v2怎么查看是v1还是v2： 1mount | grep cgroup 切换：编辑&#x2F;etc&#x2F;default&#x2F;grub，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后">
+<meta property="og:description" content="设计理念假设我们有一个无状态的web应用，且这个应用的流量随着业务的发展可能越来越大。为了将这个应用部署并对外提供服务，最简单的方式是直接部署到主机上，但是这样有一个问题是可能需要在每台主机上都部署一遍应用的依赖，再部署应用，操作繁琐。为了解决这个问题，可以在单机上做容器化部署，将应用及其依赖打包进镜像，然后在每台主机上通过containerd&#x2F;docker运行应用，但是这种方式也有一些">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-10-11T12:15:42.000Z">
-<meta property="article:modified_time" content="2025-10-12T08:27:44.556Z">
+<meta property="article:published_time" content="2025-10-18T07:40:35.000Z">
+<meta property="article:modified_time" content="2025-10-18T10:50:43.219Z">
 <meta property="article:author" content="f0resee">
-<meta property="article:tag" content="Linux">
-<meta property="article:tag" content="cgroup">
+<meta property="article:tag" content="Kubernetes">
 <meta name="twitter:card" content="summary">
 
-<link rel="canonical" href="https://f0resee.github.io/2025/10/11/linux-cgroups/">
+<link rel="canonical" href="https://f0resee.github.io/2025/10/18/kubernetes-concepts/">
 
 
 <script id="page-configurations">
@@ -47,7 +46,7 @@
   };
 </script>
 
-  <title>Linux cgroups | 学习笔记</title>
+  <title>Kubernetes concepts | 学习笔记</title>
   
 
 
@@ -163,7 +162,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/11/linux-cgroups/">
+    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/18/kubernetes-concepts/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -176,7 +175,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Linux cgroups
+          Kubernetes concepts
         </h1>
 
         <div class="post-meta">
@@ -185,23 +184,17 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-10-11 20:15:42" itemprop="dateCreated datePublished" datetime="2025-10-11T20:15:42+08:00">2025-10-11</time>
+              <time title="创建时间：2025-10-18 15:40:35 / 修改时间：18:50:43" itemprop="dateCreated datePublished" datetime="2025-10-18T15:40:35+08:00">2025-10-18</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-12 16:27:44" itemprop="dateModified" datetime="2025-10-12T16:27:44+08:00">2025-10-12</time>
-              </span>
             <span class="post-meta-item">
               <span class="post-meta-item-icon">
                 <i class="far fa-folder"></i>
               </span>
               <span class="post-meta-item-text">分类于</span>
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
+                  <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
                 </span>
             </span>
 
@@ -216,37 +209,15 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a><br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">Linux资源管理之cgroups简介</a></p>
-<h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
-<p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
+        <h1 id="设计理念"><a href="#设计理念" class="headerlink" title="设计理念"></a>设计理念</h1><p>假设我们有一个无状态的web应用，且这个应用的流量随着业务的发展可能越来越大。为了将这个应用部署并对外提供服务，最简单的方式是直接部署到主机上，但是这样有一个问题是可能需要在每台主机上都部署一遍应用的依赖，再部署应用，操作繁琐。为了解决这个问题，可以在单机上做容器化部署，将应用及其依赖打包进镜像，然后在每台主机上通过containerd&#x2F;docker运行应用，但是这种方式也有一些问题，例如怎么保证实例数量不变少，主机故障了如何屏蔽主机并在其他主机拉起实例。而k8s就是一套在多主机上管理容器化应用的容器编排系统，根据用户设定的service&#x2F;deployment spec，将预期的pod调度到不同的主机上，并保障实例数量符合预期，一方面省去了在每台机器上部署应用的重复操作提高了发布效率，另一方面通过部署、探活等机制提高了应用的可靠性。</p>
+<h1 id="Workload"><a href="#Workload" class="headerlink" title="Workload"></a>Workload</h1><h2 id="Pod"><a href="#Pod" class="headerlink" title="Pod"></a>Pod</h2><p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/concepts/workloads/pods/">kubernetes官方文档</a></p>
+<p>Pod是kubernetes中可以部署的最小单元<br>示例</p>
+<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">apiVersion: v1</span><br><span class="line">kind: Pod</span><br><span class="line">metadata:</span><br><span class="line">  name: nginx</span><br><span class="line">spec:</span><br><span class="line">  containers:</span><br><span class="line">  - name: nginx</span><br><span class="line">    image: nginx:1.14.2</span><br><span class="line">    ports:</span><br><span class="line">    - containerPort: 80</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<h2 id="Deployment"><a href="#Deployment" class="headerlink" title="Deployment"></a>Deployment</h2><p>无状态应用，实例可以互相替换</p>
+<h2 id="StatefulSet"><a href="#StatefulSet" class="headerlink" title="StatefulSet"></a>StatefulSet</h2><p>有状态应用，Pod有固定的名称和网络标识、按顺序创建&#x2F;删除</p>
+<h2 id="Daemonset"><a href="#Daemonset" class="headerlink" title="Daemonset"></a>Daemonset</h2><p>节点级别的守护进程</p>
+<h2 id="Job-CronJob"><a href="#Job-CronJob" class="headerlink" title="Job&#x2F;CronJob"></a>Job&#x2F;CronJob</h2><p>一次性&#x2F;定时任务</p>
 
-<h2 id="cgroup-v1使用"><a href="#cgroup-v1使用" class="headerlink" title="cgroup v1使用"></a>cgroup v1使用</h2><p>限制PID这个进程只能使用0.5核。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/cpu/test</span><br><span class="line"><span class="built_in">echo</span> 50000 &gt; /sys/fs/cgroup/cpu/zz/cpu.cfs_quota_us</span><br><span class="line"><span class="built_in">echo</span> PID &gt; /sys/fs/cgroup/cpu/zz/cgroup.procs</span><br></pre></td></tr></table></figure>
-<p>查看cgroup个数</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/cgroups|column -t</span><br></pre></td></tr></table></figure>
-
-<p>查看进程的cgroup信息</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
-
-
-<p>安装cgroup工具</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install cgroup-tools</span><br></pre></td></tr></table></figure>
-
-<h2 id="cgroup-子系统"><a href="#cgroup-子系统" class="headerlink" title="cgroup 子系统"></a>cgroup 子系统</h2><ul>
-<li>cpu: 限制cgroup的cpu使用量</li>
-<li>cpuact: 统计cgroup的cpu使用情况</li>
-<li>cpuset: 设置cgroup能使用的cpu核内存节点</li>
-<li>memory: 设置cgroup能使用的内存</li>
-<li>blkio: 限制cgroup的io使用</li>
-</ul>
-<h2 id="使用systemd设置cgroup"><a href="#使用systemd设置cgroup" class="headerlink" title="使用systemd设置cgroup"></a>使用systemd设置cgroup</h2><p>示例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># dd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=dd</span><br><span class="line">ConditionFileIsExecutable=/usr/libexec/dd.sh</span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/usr/libexec/dd.sh</span><br><span class="line">Slice=zhrx.slice</span><br><span class="line">CPUAccounting=yes</span><br><span class="line">CPUQuota=40%</span><br><span class="line">MemoryAccounting=yes</span><br><span class="line">MemoryMax=200M</span><br><span class="line">TasksAccounting=yes</span><br><span class="line">BlockIOAccounting=yes</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
-
-
-<p>查看cgroup树形结构</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd-cgls</span><br></pre></td></tr></table></figure>
     </div>
 
     
@@ -255,8 +226,7 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Linux/" rel="tag"># Linux</a>
-              <a href="/tags/cgroup/" rel="tag"># cgroup</a>
+              <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
           </div>
 
         
@@ -265,13 +235,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/09/28/fuction-as-a-service/" rel="prev" title="Function as a service">
-      <i class="fa fa-chevron-left"></i> Function as a service
+    <a href="/2025/10/18/kubernetes-cluster-init/" rel="prev" title="Kubernetes cluster init">
+      <i class="fa fa-chevron-left"></i> Kubernetes cluster init
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/10/16/kubernetes-devops/" rel="next" title="Kubernetes devops">
-      Kubernetes devops <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -330,7 +297,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#cgroup"><span class="nav-number">1.</span> <span class="nav-text">cgroup</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#cgroup-v1%E5%92%8Ccgroup-v2"><span class="nav-number">1.1.</span> <span class="nav-text">cgroup v1和cgroup v2</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cgroup-v1%E4%BD%BF%E7%94%A8"><span class="nav-number">1.2.</span> <span class="nav-text">cgroup v1使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#cgroup-%E5%AD%90%E7%B3%BB%E7%BB%9F"><span class="nav-number">1.3.</span> <span class="nav-text">cgroup 子系统</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8systemd%E8%AE%BE%E7%BD%AEcgroup"><span class="nav-number">1.4.</span> <span class="nav-text">使用systemd设置cgroup</span></a></li></ol></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E8%AE%BE%E8%AE%A1%E7%90%86%E5%BF%B5"><span class="nav-number">1.</span> <span class="nav-text">设计理念</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Workload"><span class="nav-number">2.</span> <span class="nav-text">Workload</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Pod"><span class="nav-number">2.1.</span> <span class="nav-text">Pod</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Deployment"><span class="nav-number">2.2.</span> <span class="nav-text">Deployment</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#StatefulSet"><span class="nav-number">2.3.</span> <span class="nav-text">StatefulSet</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Daemonset"><span class="nav-number">2.4.</span> <span class="nav-text">Daemonset</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Job-CronJob"><span class="nav-number">2.5.</span> <span class="nav-text">Job&#x2F;CronJob</span></a></li></ol></li></ol></div>
       </div>
       <!--/noindex-->
 

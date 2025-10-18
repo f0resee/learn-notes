@@ -171,7 +171,7 @@ minikube delete
 
 minikube start --kubernetes-version=v1.23.8
 
-## 二、侧使用yaml
+## 二、测试用yaml
 
 ### 1. Pod
 ```yaml
