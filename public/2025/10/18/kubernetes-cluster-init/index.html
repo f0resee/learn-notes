@@ -20,30 +20,35 @@
     var CONFIG = {"hostname":"f0resee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="coding note">
-<meta property="og:type" content="website">
-<meta property="og:title" content="学习笔记">
-<meta property="og:url" content="https://f0resee.github.io/index.html">
+  <meta name="description" content="一、安装kubernetes.io kubectl-commands 1. 准备123swapoff -a      &#x2F;&#x2F;关闭swap, 立即生效vim &#x2F;etc&#x2F;fstab  &#x2F;&#x2F;永久关闭swap，注视有swap的一行  2.下载安装containerd和runccontainerd 安装containerd与cni 1234567891011121314151617wget https:&#x2F;&#x2F;g">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Kubernetes cluster init">
+<meta property="og:url" content="https://f0resee.github.io/2025/10/18/kubernetes-cluster-init/index.html">
 <meta property="og:site_name" content="学习笔记">
-<meta property="og:description" content="coding note">
+<meta property="og:description" content="一、安装kubernetes.io kubectl-commands 1. 准备123swapoff -a      &#x2F;&#x2F;关闭swap, 立即生效vim &#x2F;etc&#x2F;fstab  &#x2F;&#x2F;永久关闭swap，注视有swap的一行  2.下载安装containerd和runccontainerd 安装containerd与cni 1234567891011121314151617wget https:&#x2F;&#x2F;g">
 <meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://f0resee.github.io/img/kubernetes.png">
+<meta property="article:published_time" content="2025-10-18T01:46:59.000Z">
+<meta property="article:modified_time" content="2025-10-18T02:19:50.123Z">
 <meta property="article:author" content="f0resee">
+<meta property="article:tag" content="Kubernetes">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://f0resee.github.io/img/kubernetes.png">
 
-<link rel="canonical" href="https://f0resee.github.io/">
+<link rel="canonical" href="https://f0resee.github.io/2025/10/18/kubernetes-cluster-init/">
 
 
 <script id="page-configurations">
   // https://hexo.io/docs/variables.html
   CONFIG.page = {
     sidebar: "",
-    isHome : true,
-    isPost : false,
+    isHome : false,
+    isPost : true,
     lang   : 'zh-CN'
   };
 </script>
 
-  <title>学习笔记</title>
+  <title>Kubernetes cluster init | 学习笔记</title>
   
 
 
@@ -152,9 +157,10 @@
         <div class="content-wrap">
           
 
-          <div class="content index posts-expand">
+          <div class="content post posts-expand">
             
-      
+
+    
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
@@ -170,10 +176,9 @@
       <meta itemprop="name" content="学习笔记">
     </span>
       <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/18/kubernetes-cluster-init/" class="post-title-link" itemprop="url">Kubernetes cluster init</a>
-        </h2>
+        <h1 class="post-title" itemprop="name headline">
+          Kubernetes cluster init
+        </h1>
 
         <div class="post-meta">
             <span class="post-meta-item">
@@ -206,7 +211,7 @@
     <div class="post-body" itemprop="articleBody">
 
       
-          <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><p><a target="_blank" rel="noopener" href="https://kubernetes.io/">kubernetes.io</a></p>
+        <h2 id="一、安装"><a href="#一、安装" class="headerlink" title="一、安装"></a>一、安装</h2><p><a target="_blank" rel="noopener" href="https://kubernetes.io/">kubernetes.io</a></p>
 <p><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/reference/generated/kubectl/kubectl-commands#create">kubectl-commands</a></p>
 <h3 id="1-准备"><a href="#1-准备" class="headerlink" title="1. 准备"></a>1. 准备</h3><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">swapoff -a      //关闭swap, 立即生效</span><br><span class="line"></span><br><span class="line">vim /etc/fstab  //永久关闭swap，注视有swap的一行</span><br></pre></td></tr></table></figure>
 
@@ -266,604 +271,33 @@
 <figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">kubectl expose deployment my-dep --port=8000 --target-port=80 --type=NodePort</span><br></pre></td></tr></table></figure>
 <figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">apiVersion:</span> <span class="string">v1</span></span><br><span class="line"><span class="attr">kind:</span> <span class="string">Service</span></span><br><span class="line"><span class="attr">metadata:</span></span><br><span class="line">  <span class="attr">labels:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">name:</span> <span class="string">my-dep</span></span><br><span class="line"><span class="attr">spec:</span></span><br><span class="line">  <span class="attr">ports:</span></span><br><span class="line">  <span class="bullet">-</span> <span class="attr">port:</span> <span class="number">8000</span></span><br><span class="line">    <span class="attr">protocol:</span> <span class="string">TCP</span></span><br><span class="line">    <span class="attr">targetPort:</span> <span class="number">80</span></span><br><span class="line">  <span class="attr">selector:</span></span><br><span class="line">    <span class="attr">app:</span> <span class="string">my-dep</span></span><br><span class="line">  <span class="attr">type:</span> <span class="string">NodePort</span></span><br><span class="line"></span><br></pre></td></tr></table></figure>
 <h3 id="15-Ingress"><a href="#15-Ingress" class="headerlink" title="15. Ingress"></a>15. Ingress</h3><h3 id="16-Taint和Tolerant"><a href="#16-Taint和Tolerant" class="headerlink" title="16. Taint和Tolerant"></a>16. Taint和Tolerant</h3><h3 id="17-RBAC"><a href="#17-RBAC" class="headerlink" title="17. RBAC"></a>17. RBAC</h3><h3 id="18-CronJob"><a href="#18-CronJob" class="headerlink" title="18. CronJob"></a>18. CronJob</h3><h2 id="四、源码"><a href="#四、源码" class="headerlink" title="四、源码"></a>四、源码</h2>
-      
     </div>
 
     
     
     
+
       <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
+          <div class="post-tags">
+              <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+          </div>
 
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/16/kubernetes-devops/">
+        
 
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
 
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/16/kubernetes-devops/" class="post-title-link" itemprop="url">Kubernetes devops</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-16 22:37:22" itemprop="dateCreated datePublished" datetime="2025-10-16T22:37:22+08:00">2025-10-16</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-17 00:10:04" itemprop="dateModified" datetime="2025-10-17T00:10:04+08:00">2025-10-17</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Kubernetes/" itemprop="url" rel="index"><span itemprop="name">Kubernetes</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="kubelet"><a href="#kubelet" class="headerlink" title="kubelet"></a>kubelet</h1><h2 id="启动命令"><a href="#启动命令" class="headerlink" title="启动命令"></a>启动命令</h2><p>在node上，kubelet是一个systemd拉起的service，可以通过<code>systemctl status kubelet.service</code>查看相关信息。两个比较重要的文件：</p>
-<ul>
-<li>&#x2F;lib&#x2F;systemd&#x2F;system&#x2F;kubelet.service</li>
-<li>&#x2F;etc&#x2F;systemd&#x2F;system&#x2F;kubelet.service.d&#x2F;10-kubeadm.conf</li>
-</ul>
-<p>其中第二个文件中的内容会对第一个文件进行部分覆盖，因此完整的启动命令其实取决于这两个文件。</p>
-<h2 id="配置拓扑调度"><a href="#配置拓扑调度" class="headerlink" title="配置拓扑调度"></a>配置拓扑调度</h2>
-      
+        
+    <div class="post-nav">
+      <div class="post-nav-item">
+    <a href="/2025/10/16/kubernetes-devops/" rel="prev" title="Kubernetes devops">
+      <i class="fa fa-chevron-left"></i> Kubernetes devops
+    </a></div>
+      <div class="post-nav-item"></div>
     </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
       </footer>
+    
   </article>
   
   
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/10/11/linux-cgroups/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/10/11/linux-cgroups/" class="post-title-link" itemprop="url">Linux cgroups</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-10-11 20:15:42" itemprop="dateCreated datePublished" datetime="2025-10-11T20:15:42+08:00">2025-10-11</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-12 16:27:44" itemprop="dateModified" datetime="2025-10-12T16:27:44+08:00">2025-10-12</time>
-              </span>
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-folder"></i>
-              </span>
-              <span class="post-meta-item-text">分类于</span>
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/Linux/" itemprop="url" rel="index"><span itemprop="name">Linux</span></a>
-                </span>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="cgroup"><a href="#cgroup" class="headerlink" title="cgroup"></a>cgroup</h1><p><a target="_blank" rel="noopener" href="https://www.cnblogs.com/zhrx/p/16388175.html">Cgroup原理及使用</a><br><a target="_blank" rel="noopener" href="https://tech.meituan.com/2015/03/31/cgroups.html">Linux资源管理之cgroups简介</a></p>
-<h2 id="cgroup-v1和cgroup-v2"><a href="#cgroup-v1和cgroup-v2" class="headerlink" title="cgroup v1和cgroup v2"></a>cgroup v1和cgroup v2</h2><p>怎么查看是v1还是v2：</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">mount | grep cgroup</span><br></pre></td></tr></table></figure>
-<p>切换：编辑<code>/etc/default/grub</code>，GRUB_CMDLINE_LINUX内将systemd.unified_cgroup_hierarchy设置为0即是cgroup v1，设置为1则是cgroup v2，编辑后需要执行</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">update-grub</span><br><span class="line">reboot</span><br></pre></td></tr></table></figure>
-
-<h2 id="cgroup-v1使用"><a href="#cgroup-v1使用" class="headerlink" title="cgroup v1使用"></a>cgroup v1使用</h2><p>限制PID这个进程只能使用0.5核。</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">mkdir</span> /sys/fs/cgroup/cpu/test</span><br><span class="line"><span class="built_in">echo</span> 50000 &gt; /sys/fs/cgroup/cpu/zz/cpu.cfs_quota_us</span><br><span class="line"><span class="built_in">echo</span> PID &gt; /sys/fs/cgroup/cpu/zz/cgroup.procs</span><br></pre></td></tr></table></figure>
-<p>查看cgroup个数</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/cgroups|column -t</span><br></pre></td></tr></table></figure>
-
-<p>查看进程的cgroup信息</p>
-<figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">cat</span> /proc/PID/cgroup</span><br></pre></td></tr></table></figure>
-
-
-<p>安装cgroup工具</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">apt install cgroup-tools</span><br></pre></td></tr></table></figure>
-
-<h2 id="cgroup-子系统"><a href="#cgroup-子系统" class="headerlink" title="cgroup 子系统"></a>cgroup 子系统</h2><ul>
-<li>cpu: 限制cgroup的cpu使用量</li>
-<li>cpuact: 统计cgroup的cpu使用情况</li>
-<li>cpuset: 设置cgroup能使用的cpu核内存节点</li>
-<li>memory: 设置cgroup能使用的内存</li>
-<li>blkio: 限制cgroup的io使用</li>
-</ul>
-<h2 id="使用systemd设置cgroup"><a href="#使用systemd设置cgroup" class="headerlink" title="使用systemd设置cgroup"></a>使用systemd设置cgroup</h2><p>示例</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line"># dd.service</span><br><span class="line">[Unit]</span><br><span class="line">Description=dd</span><br><span class="line">ConditionFileIsExecutable=/usr/libexec/dd.sh</span><br><span class="line">[Service]</span><br><span class="line">Type=simple</span><br><span class="line">ExecStart=/usr/libexec/dd.sh</span><br><span class="line">Slice=zhrx.slice</span><br><span class="line">CPUAccounting=yes</span><br><span class="line">CPUQuota=40%</span><br><span class="line">MemoryAccounting=yes</span><br><span class="line">MemoryMax=200M</span><br><span class="line">TasksAccounting=yes</span><br><span class="line">BlockIOAccounting=yes</span><br><span class="line">[Install]</span><br><span class="line">WantedBy=multi-user.target</span><br></pre></td></tr></table></figure>
-
-
-<p>查看cgroup树形结构</p>
-<figure class="highlight plaintext"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">systemd-cgls</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/09/28/fuction-as-a-service/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/28/fuction-as-a-service/" class="post-title-link" itemprop="url">Function as a service</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-28 23:43:02" itemprop="dateCreated datePublished" datetime="2025-09-28T23:43:02+08:00">2025-09-28</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-10-11 20:15:16" itemprop="dateModified" datetime="2025-10-11T20:15:16+08:00">2025-10-11</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/09/08/web-auth/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/08/web-auth/" class="post-title-link" itemprop="url">Authentication and authorization</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-09-08 22:39:36" itemprop="dateCreated datePublished" datetime="2025-09-08T22:39:36+08:00">2025-09-08</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-09 00:21:43" itemprop="dateModified" datetime="2025-09-09T00:21:43+08:00">2025-09-09</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="认证（Authentication）"><a href="#认证（Authentication）" class="headerlink" title="认证（Authentication）"></a>认证（Authentication）</h1><p>认证要解决的是系统如何正确的分辨出操作用户的真实身份。三种层面的认证：</p>
-<ol>
-<li>通信信道上的认证：在网络传输（Network）场景中的典型是基于SSL&#x2F;TLS传输安全层的认证。</li>
-<li>通信协议上的认证：在互联网（Internet）场景中的典型是基于HTTP协议的认证。IETF定义的一些HTTP认证方案：<ul>
-<li>Basic：HTTP请求header添加base64加密后的用户名和密码</li>
-<li>Digest：改进的basic（用户名和密码加盐）</li>
-<li>Bearer：基于Oauth2规范来完成认证</li>
-<li>HOBA：基于自签名证书的认证方案</li>
-</ul>
-</li>
-<li>通信内容上的认证：在万维网（World Wide Web）场景中的典型是基于Web内容的认证。<ul>
-<li>WebAuthn</li>
-</ul>
-</li>
-</ol>
-<h1 id="授权（Authorization）"><a href="#授权（Authorization）" class="headerlink" title="授权（Authorization）"></a>授权（Authorization）</h1><p>授权要解决的是系统如何控制一个用户该看到哪些数据、能操作哪些功能。典型的授权方案：</p>
-<ol>
-<li>RBAC（Role-Based Access Control）：用户（user）隶属角色（role），角色拥有许可（permission）操作资源（resource）。</li>
-<li>ABAC（Attribute-Based Access Control）</li>
-<li>ACL（Access Control List）</li>
-<li>RBAC（Rule-Based Access Control）</li>
-<li>MAC（Mandatory Access Control）</li>
-<li>Oauth2：面向解决第三方应用的认证授权协议</li>
-</ol>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/09/02/golang-interface/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/09/02/golang-interface/" class="post-title-link" itemprop="url">Golang interface best practice</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-              
-
-              <time title="创建时间：2025-09-02 22:00:53 / 修改时间：22:16:19" itemprop="dateCreated datePublished" datetime="2025-09-02T22:00:53+08:00">2025-09-02</time>
-            </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h1 id="1-在使用接口的地方定义接口"><a href="#1-在使用接口的地方定义接口" class="headerlink" title="1. 在使用接口的地方定义接口"></a>1. 在使用接口的地方定义接口</h1><p>带来的优点：</p>
-<ul>
-<li>各个包之间松耦合，增强了灵活性，简化了测试</li>
-<li>增加了代码灵活性</li>
-<li>遵循依赖倒置原则</li>
-</ul>
-<h1 id="2-让接口简单专用"><a href="#2-让接口简单专用" class="headerlink" title="2. 让接口简单专用"></a>2. 让接口简单专用</h1><p>好的接口设计应该遵循：</p>
-<ul>
-<li>只包含所需功能依赖的必要方法</li>
-<li>容易实现及理解</li>
-<li>可重用、可替换</li>
-</ul>
-<h1 id="3-使用组合来实现更复杂的接口"><a href="#3-使用组合来实现更复杂的接口" class="headerlink" title="3. 使用组合来实现更复杂的接口"></a>3. 使用组合来实现更复杂的接口</h1><ul>
-<li>提升可重用性，更加清晰</li>
-<li>简化了维护和扩展</li>
-<li>与go的设计哲学保持一致</li>
-</ul>
-<h1 id="4-理解golang中接口的0值"><a href="#4-理解golang中接口的0值" class="headerlink" title="4. 理解golang中接口的0值"></a>4. 理解golang中接口的0值</h1><p>接口nil和纯nil不一样</p>
-<figure class="highlight golang"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">var</span> err1 <span class="type">error</span> <span class="comment">// Uninitialized interface, nil</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">type</span> MyError <span class="keyword">struct</span>&#123;&#125;</span><br><span class="line"><span class="function"><span class="keyword">func</span> <span class="params">(m *MyError)</span></span> Error() <span class="type">string</span>&#123;</span><br><span class="line">    <span class="keyword">return</span> <span class="string">&quot;my error&quot;</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">var</span> myError *MyError</span><br><span class="line">err1 = myError</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/08/07/kubernetes-memory-manager/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/07/kubernetes-memory-manager/" class="post-title-link" itemprop="url">Kubernetes NUMA-aware Memory Manager</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-08-07 21:37:07" itemprop="dateCreated datePublished" datetime="2025-08-07T21:37:07+08:00">2025-08-07</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-02 22:01:27" itemprop="dateModified" datetime="2025-09-02T22:01:27+08:00">2025-09-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <p>对于具有多个NUMA节点的Intel CPU，CPU访问所属NUMA节点下的内存延迟更低，跨NUMA访问内存时延迟较高，对于一些性能敏感的应用来说，如果能够确保应用只访问本地内存，或者尽可能少出现跨NUMA访问，可以显著提高应用性能。因此k8s内引入了内存管理器，其目标是：</p>
-<ol>
-<li>保障容器分配到足够多的可用内存，并且内存分布于尽可能少的NUMA节点上</li>
-<li>对于一组容器，确保其内存和大页的亲和性属于同一个NUMA节点</li>
-</ol>
-<h2 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/">Utilizing the NUMA-aware Memory Manager</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/1769-memory-manager#kep-1769-memory-manager">KEP-1769: Memory Manager</a></li>
-</ul>
-<h2 id="核心思路"><a href="#核心思路" class="headerlink" title="核心思路"></a>核心思路</h2><p>实现了<a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/tree/release-1.24/pkg/kubelet/cm/memorymanager">MemoryManager</a>，MemoryManger提供的主要功能是：</p>
-<ul>
-<li>对于一个给定内存需求的容器，确定其内存分配到哪几个NUMA上</li>
-<li>决策结果的持久化，因为kubelet可能会重启</li>
-<li>查询容器的内存分配结果</li>
-<li>…</li>
-</ul>
-<p>MemoryManger的核心是<a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/blob/release-1.24/pkg/kubelet/cm/memorymanager/policy.go">Policy</a>，用于决策怎么给QOS为Guaranteed并且内存需求的内存资源为整数MB的容器分配内存。Static policy核心Allocate算法可以概括为：</p>
-<ul>
-<li>对于一个具有n个NUMA节点的主机来说，这n个节点可能会有n*(n-1)种组合，分别为[[0],…,[n],[0,1],…[n-1,n],…,[0,1,…,n]]，最终内存分配的结果是其中一种</li>
-<li>对于其中的每个组合，判断其中各个NUMA节点的Allocatable内存之和是否可以满足容器的内存需求，如果可以满足，则将其视为一种可能的组合</li>
-<li>对于所有可能的组合，将其中NUMA节点最少的组合记为preferred</li>
-<li>从preferred组合种寻找best hint，判断的规则是其NUMA id排序最小</li>
-<li>选出best hint后，需要判断best hint是否可以满足所有内存资源需求。如果不是，则需要扩大hint范围，扩展的策略是筛选出所有包含best hint的hint，并再此选出其中最优的</li>
-<li>如果以上决策出的hint中包含多个NUMA node，那么这几个NUMA node被视为位于一个cell，之后这几个NUMA node都不能单独提供内存，也不能再加入其他的cell</li>
-</ul>
-<p>一些特性：</p>
-<ul>
-<li>Policy的Allocate接口是幂等的</li>
-<li>对于一个pod来说，init container的内存是可以被后续的容器所使用的</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-      
-  
-  
-  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/08/01/linux-commands/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="/images/avatar.gif">
-      <meta itemprop="name" content="f0resee">
-      <meta itemprop="description" content="coding note">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="学习笔记">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          
-            <a href="/2025/08/01/linux-commands/" class="post-title-link" itemprop="url">Linux commands</a>
-        </h2>
-
-        <div class="post-meta">
-            <span class="post-meta-item">
-              <span class="post-meta-item-icon">
-                <i class="far fa-calendar"></i>
-              </span>
-              <span class="post-meta-item-text">发表于</span>
-
-              <time title="创建时间：2025-08-01 20:08:21" itemprop="dateCreated datePublished" datetime="2025-08-01T20:08:21+08:00">2025-08-01</time>
-            </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-02 22:01:24" itemprop="dateModified" datetime="2025-09-02T22:01:24+08:00">2025-09-02</time>
-              </span>
-
-          
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-          <h2 id="cpu"><a href="#cpu" class="headerlink" title="cpu"></a>cpu</h2><h2 id="memory"><a href="#memory" class="headerlink" title="memory"></a>memory</h2><h2 id="process"><a href="#process" class="headerlink" title="process"></a>process</h2><figure class="highlight sh"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 列出所有进程</span></span><br><span class="line">ps -ef</span><br><span class="line">ps -aux</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看指定进程</span></span><br><span class="line">ps -p 3284</span><br><span class="line"></span><br><span class="line"><span class="comment"># 列出子进程</span></span><br><span class="line">ps --ppid 3284 </span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看所有父进程</span></span><br><span class="line">pstree -p -s 3370</span><br></pre></td></tr></table></figure>
-
-<h2 id="filesystem"><a href="#filesystem" class="headerlink" title="filesystem"></a>filesystem</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">debugfs /dev/vda1</span><br><span class="line"></span><br><span class="line">stat /tmp</span><br><span class="line"></span><br><span class="line">df -i</span><br><span class="line">df -h</span><br><span class="line">du -sh *</span><br></pre></td></tr></table></figure>
-
-<h2 id="network"><a href="#network" class="headerlink" title="network"></a>network</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta prompt_"># </span><span class="language-bash">查看打开的端口</span></span><br><span class="line">lsof -ni</span><br><span class="line"></span><br><span class="line">netstat</span><br><span class="line"></span><br><span class="line">ss</span><br></pre></td></tr></table></figure>
-
-<h2 id="atop"><a href="#atop" class="headerlink" title="atop"></a>atop</h2><h2 id="containerd"><a href="#containerd" class="headerlink" title="containerd"></a>containerd</h2><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment"># 拉镜像</span></span><br><span class="line">ctr image pull docker.io/library/nginx:latest</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建容器并启动</span></span><br><span class="line">ctr run --detach docker.io/library/nginx:latest nginx-test</span><br><span class="line">ctr run --<span class="built_in">rm</span> --shim-cgroup /my_cgroup docker.io/library/nginx:latest nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建容器</span></span><br><span class="line">ctr container create docker.io/library/nginx:latest nginx-test</span><br><span class="line">ctr container create --mount=<span class="built_in">type</span>=<span class="built_in">bind</span>,src=/test/tmp,dst=/host/path,options=rbind:ro docker.io/library/nginx:latest nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 查看容器信息</span></span><br><span class="line">ctr container info nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 删除容器</span></span><br><span class="line">ctr container delete nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 启动容器</span></span><br><span class="line">ctr task start --detach nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 容器内执行命令</span></span><br><span class="line">ctr task <span class="built_in">exec</span> --exec-id pwd-test nginx-test <span class="built_in">pwd</span></span><br><span class="line">ctr task <span class="built_in">exec</span> -t --exec-id bash-test nginx-test /bin/bash</span><br><span class="line"></span><br><span class="line"><span class="comment"># </span></span><br><span class="line">ctr task attach nginx-test</span><br><span class="line"></span><br><span class="line"><span class="comment"># 向容器发信号</span></span><br><span class="line">ctr task <span class="built_in">kill</span> -s 9 nginx-test</span><br></pre></td></tr></table></figure>
-
-
-<h2 id="systemd"><a href="#systemd" class="headerlink" title="systemd"></a>systemd</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">systemctl status containerd.service</span><br><span class="line">systemctl restart containerd.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="journalctl"><a href="#journalctl" class="headerlink" title="journalctl"></a>journalctl</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">journalctl -u containerd.service</span><br></pre></td></tr></table></figure>
-
-<h2 id="mysql"><a href="#mysql" class="headerlink" title="mysql"></a>mysql</h2><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">apt install mariadb-server</span><br><span class="line">mysqladm -u root password &#x27;123456&#x27;</span><br></pre></td></tr></table></figure>
-
-
-      
-    </div>
-
-    
-    
-    
-      <footer class="post-footer">
-        <div class="post-eof"></div>
-      </footer>
-  </article>
-  
-  
-  
-
-
   
 
 
@@ -916,6 +350,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%AE%89%E8%A3%85"><span class="nav-number">1.</span> <span class="nav-text">一、安装</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-%E5%87%86%E5%A4%87"><span class="nav-number">1.1.</span> <span class="nav-text">1. 准备</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-%E4%B8%8B%E8%BD%BD%E5%AE%89%E8%A3%85containerd%E5%92%8Crunc"><span class="nav-number">1.2.</span> <span class="nav-text">2.下载安装containerd和runc</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-%E5%AE%89%E8%A3%85kubelet%E3%80%81kubeadm%E3%80%81kubectl"><span class="nav-number">1.3.</span> <span class="nav-text">3. 安装kubelet、kubeadm、kubectl</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-%E5%88%9D%E5%A7%8B%E5%8C%96%E9%9B%86%E7%BE%A4%EF%BC%8C%E5%AE%89%E8%A3%85%E7%BD%91%E7%BB%9C%E7%BB%84%E4%BB%B6"><span class="nav-number">1.4.</span> <span class="nav-text">4. 初始化集群，安装网络组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-%E5%AE%89%E8%A3%85dashboard"><span class="nav-number">1.5.</span> <span class="nav-text">5. 安装dashboard</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-minikube"><span class="nav-number">1.6.</span> <span class="nav-text">6. minikube</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81%E4%B8%BB%E8%A6%81%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">二、主要组件</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%8E%A7%E5%88%B6%E9%9D%A2%E7%BB%84%E4%BB%B6"><span class="nav-number">2.1.</span> <span class="nav-text">控制面组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#1-API-server-kube-apiserver"><span class="nav-number">2.2.</span> <span class="nav-text">1. API server(kube-apiserver)</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-etcd"><span class="nav-number">2.3.</span> <span class="nav-text">2. etcd</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-kube-scheduler"><span class="nav-number">2.4.</span> <span class="nav-text">3. kube-scheduler</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-kube-controller-manager"><span class="nav-number">2.5.</span> <span class="nav-text">4. kube-controller-manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8A%82%E7%82%B9%E7%BB%84%E4%BB%B6"><span class="nav-number">2.6.</span> <span class="nav-text">节点组件</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-kubelet"><span class="nav-number">2.7.</span> <span class="nav-text">5. kubelet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-kube-proxy"><span class="nav-number">2.8.</span> <span class="nav-text">6. kube-proxy</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E5%9F%BA%E7%A1%80%E6%A6%82%E5%BF%B5"><span class="nav-number">3.</span> <span class="nav-text">三、基础概念</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#1-Master%E8%8A%82%E7%82%B9"><span class="nav-number">3.1.</span> <span class="nav-text">1. Master节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2-Node%E8%8A%82%E7%82%B9"><span class="nav-number">3.2.</span> <span class="nav-text">2. Node节点</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3-Namespace"><span class="nav-number">3.3.</span> <span class="nav-text">3. Namespace</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#4-Pod"><span class="nav-number">3.4.</span> <span class="nav-text">4. Pod</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#5-Label%E5%92%8CSelector"><span class="nav-number">3.5.</span> <span class="nav-text">5. Label和Selector</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#6-Replication-Controller%E5%92%8CReplicaSet"><span class="nav-number">3.6.</span> <span class="nav-text">6. Replication Controller和ReplicaSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#7-Deployment"><span class="nav-number">3.7.</span> <span class="nav-text">7. Deployment</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#8-Statement"><span class="nav-number">3.8.</span> <span class="nav-text">8. Statement</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#9-DaemonSet"><span class="nav-number">3.9.</span> <span class="nav-text">9. DaemonSet</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#10-ConfigMap"><span class="nav-number">3.10.</span> <span class="nav-text">10. ConfigMap</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#11-Seret"><span class="nav-number">3.11.</span> <span class="nav-text">11. Seret</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#12-HPA"><span class="nav-number">3.12.</span> <span class="nav-text">12. HPA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#13-Storage"><span class="nav-number">3.13.</span> <span class="nav-text">13. Storage</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#14-Service"><span class="nav-number">3.14.</span> <span class="nav-text">14. Service</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#15-Ingress"><span class="nav-number">3.15.</span> <span class="nav-text">15. Ingress</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#16-Taint%E5%92%8CTolerant"><span class="nav-number">3.16.</span> <span class="nav-text">16. Taint和Tolerant</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#17-RBAC"><span class="nav-number">3.17.</span> <span class="nav-text">17. RBAC</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#18-CronJob"><span class="nav-number">3.18.</span> <span class="nav-text">18. CronJob</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E6%BA%90%E7%A0%81"><span class="nav-number">4.</span> <span class="nav-text">四、源码</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
