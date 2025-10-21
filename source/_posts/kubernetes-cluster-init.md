@@ -174,6 +174,17 @@ minikube start --kubernetes-version=v1.23.8
 ## 二、测试用yaml
 
 ### 1. Pod
+
+```sh
+kubectl get pod -A
+kubectl get pod -n test  
+kubectl get pods -A -o wide
+kubectl describe pod mynginx -n test
+kubectl logs mynginx -n test
+kubectl exec -it mynginx -n test -- /bin/bash
+kubectl exec -it mynginx -n test -c nginx -- /bin/bash
+```
+
 ```yaml
 kind: Pod
 apiVersion: v1
@@ -221,6 +232,9 @@ spec:
         image: nginx
 ```
 ### 3. Service
+```bash
+kubectl expose deployment my-dep --port=8000 --target-port=80 --type=ClusterIP
+```
 ```yaml
 apiVersion: v1
 kind: Service
@@ -235,6 +249,13 @@ spec:
   - port: 8000
     protocol: TCP
     targetPort: 80
+```
+```bash
+curl 10.98.164.10:8000
+curl my-dep.default.svc:8000
+```
+```
+kubectl expose deployment my-dep --port=8000 --target-port=80 --type=NodePort
 ```
 ```yaml
 apiVersion: v1
