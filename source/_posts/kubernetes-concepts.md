@@ -131,6 +131,44 @@ spec:
 ## Job/CronJob
 一次性/定时任务
 
+# ConfigMap and Storage
+## ConfigMap
+```bash
+# 创建
+kubectl create configmap myconfig --from-literal=k1=v1 --from-literal=k2=v2
+```
+
+```yaml
+# 从文件创建
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: myconfigyaml
+data:
+  k1: v1
+  k2: v2
+```
+
+```yaml
+# 使用
+apiVersion: v1
+kind: Pod
+metadata:
+  name: config-pod
+spec:
+  containers:
+  - name: config-pod
+    image: gcr.io/google_containers/busybox
+    command: ["/bin/sh", "-c", "env"]
+    env:
+    - name: MY_CONFIG_KEY
+      valueFrom:
+        configMapKeyRef:
+          name: myconfig
+          key: k1
+  restartPolicy: Never
+```
+
 # 组件
 ## etcd
 完备、高可用key-value存储，用于k8s后端存储所有的集群数据。
