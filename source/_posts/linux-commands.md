@@ -3,12 +3,28 @@ title: Linux commands
 date: 2025-08-01 20:08:21
 tags: Linux
 ---
+## atop
+```bash
+# 读取日志文件
+atop -b 202510301937 -r /var/log/atop/atop_20251030
+```
++ c: 完整命令行
++ g: 通用视图
++ m: 内存视图
++ d: 磁盘视图
++ n: 网络视图
++ a: 聚合视图
++ C: 按cpu排序
++ h: 帮助，比如查看后发现按I可以查看置顶pid的信息
 ## cpu
 
 ## memory
+```bash
+free
+```
 
 ## process
-```sh
+```shell
 # 列出所有进程
 ps -ef
 ps -aux
@@ -43,8 +59,6 @@ netstat
 
 ss
 ```
-
-## atop
 
 ## containerd
 ```bash
