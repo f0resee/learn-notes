@@ -111,3 +111,16 @@ apt install mariadb-server
 mysqladm -u root password '123456'
 ```
 
+## segment fault
+```shell
+gdb -c core elf
+
+bt
+
+p $_siginfo
+
+x/i $pc
+
+# register value
+i r 
+```
