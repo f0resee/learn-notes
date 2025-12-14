@@ -20,20 +20,27 @@
     var CONFIG = {"hostname":"f0resee.github.io","root":"/","scheme":"Pisces","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
   </script>
 
-  <meta name="description" content="对于具有多个NUMA节点的Intel CPU，CPU访问所属NUMA节点下的内存延迟更低，跨NUMA访问内存时延迟较高，对于一些性能敏感的应用来说，如果能够确保应用只访问本地内存，或者尽可能少出现跨NUMA访问，可以显著提高应用性能。因此k8s内引入了内存管理器，其目标是：  保障容器分配到足够多的可用内存，并且内存分布于尽可能少的NUMA节点上 对于一组容器，确保其内存和大页的亲和性属于同一个N">
+  <meta name="description" content="通用部分本文主要介绍CPU拓扑相关的内容。一张主板上可能有一个或者两个CPU插槽，称为socket；而在一个CPU下可能又会有进一步的拓扑结构，将一个CPU又分成了一个或者多个NUMA。 IntelCPU的基本构造以Intel i9 9900K为例，基本构造：  一颗CPU内有8个Core，每个Core都有一个Ring Stop，多个Core之间通过Ring总线进行通信 每个Core有2MB的L3">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Kubernetes NUMA-aware Memory Manager">
-<meta property="og:url" content="https://f0resee.github.io/2025/08/07/kubernetes-memory-manager/index.html">
+<meta property="og:title" content="cpu-topology">
+<meta property="og:url" content="https://f0resee.github.io/2025/12/14/cpu-topology/index.html">
 <meta property="og:site_name" content="学习笔记">
-<meta property="og:description" content="对于具有多个NUMA节点的Intel CPU，CPU访问所属NUMA节点下的内存延迟更低，跨NUMA访问内存时延迟较高，对于一些性能敏感的应用来说，如果能够确保应用只访问本地内存，或者尽可能少出现跨NUMA访问，可以显著提高应用性能。因此k8s内引入了内存管理器，其目标是：  保障容器分配到足够多的可用内存，并且内存分布于尽可能少的NUMA节点上 对于一组容器，确保其内存和大页的亲和性属于同一个N">
+<meta property="og:description" content="通用部分本文主要介绍CPU拓扑相关的内容。一张主板上可能有一个或者两个CPU插槽，称为socket；而在一个CPU下可能又会有进一步的拓扑结构，将一个CPU又分成了一个或者多个NUMA。 IntelCPU的基本构造以Intel i9 9900K为例，基本构造：  一颗CPU内有8个Core，每个Core都有一个Ring Stop，多个Core之间通过Ring总线进行通信 每个Core有2MB的L3">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:published_time" content="2025-08-07T13:37:07.000Z">
-<meta property="article:modified_time" content="2025-09-02T14:01:27.344Z">
+<meta property="og:image" content="https://f0resee.github.io/cpu-topology/cpu-and-pch.jpg">
+<meta property="og:image" content="https://f0resee.github.io/cpu-topology/mulit-socket-single-die.jpg">
+<meta property="og:image" content="https://f0resee.github.io/cpu-topology/cluster-on-die.jpg">
+<meta property="og:image" content="https://f0resee.github.io/cpu-topology/mutichip-module.jpg">
+<meta property="og:image" content="https://f0resee.github.io/cpu-topology/mcm-logic-view.jpg">
+<meta property="article:published_time" content="2025-12-14T05:13:29.000Z">
+<meta property="article:modified_time" content="2025-12-14T06:44:52.577Z">
 <meta property="article:author" content="f0resee">
-<meta property="article:tag" content="Kubernetes">
+<meta property="article:tag" content="NUMA">
+<meta property="article:tag" content="Topology">
 <meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://f0resee.github.io/cpu-topology/cpu-and-pch.jpg">
 
-<link rel="canonical" href="https://f0resee.github.io/2025/08/07/kubernetes-memory-manager/">
+<link rel="canonical" href="https://f0resee.github.io/2025/12/14/cpu-topology/">
 
 
 <script id="page-configurations">
@@ -46,7 +53,7 @@
   };
 </script>
 
-  <title>Kubernetes NUMA-aware Memory Manager | 学习笔记</title>
+  <title>cpu-topology | 学习笔记</title>
   
 
 
@@ -162,7 +169,7 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
-    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/08/07/kubernetes-memory-manager/">
+    <link itemprop="mainEntityOfPage" href="https://f0resee.github.io/2025/12/14/cpu-topology/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="/images/avatar.gif">
@@ -175,7 +182,7 @@
     </span>
       <header class="post-header">
         <h1 class="post-title" itemprop="name headline">
-          Kubernetes NUMA-aware Memory Manager
+          cpu-topology
         </h1>
 
         <div class="post-meta">
@@ -184,16 +191,19 @@
                 <i class="far fa-calendar"></i>
               </span>
               <span class="post-meta-item-text">发表于</span>
+              
 
-              <time title="创建时间：2025-08-07 21:37:07" itemprop="dateCreated datePublished" datetime="2025-08-07T21:37:07+08:00">2025-08-07</time>
+              <time title="创建时间：2025-12-14 13:13:29 / 修改时间：14:44:52" itemprop="dateCreated datePublished" datetime="2025-12-14T13:13:29+08:00">2025-12-14</time>
             </span>
-              <span class="post-meta-item">
-                <span class="post-meta-item-icon">
-                  <i class="far fa-calendar-check"></i>
-                </span>
-                <span class="post-meta-item-text">更新于</span>
-                <time title="修改时间：2025-09-02 22:01:27" itemprop="dateModified" datetime="2025-09-02T22:01:27+08:00">2025-09-02</time>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Topology/" itemprop="url" rel="index"><span itemprop="name">Topology</span></a>
+                </span>
+            </span>
 
           
 
@@ -206,35 +216,36 @@
     <div class="post-body" itemprop="articleBody">
 
       
-        <p>对于具有多个NUMA节点的Intel CPU，CPU访问所属NUMA节点下的内存延迟更低，跨NUMA访问内存时延迟较高，对于一些性能敏感的应用来说，如果能够确保应用只访问本地内存，或者尽可能少出现跨NUMA访问，可以显著提高应用性能。因此k8s内引入了内存管理器，其目标是：</p>
-<ol>
-<li>保障容器分配到足够多的可用内存，并且内存分布于尽可能少的NUMA节点上</li>
-<li>对于一组容器，确保其内存和大页的亲和性属于同一个NUMA节点</li>
-</ol>
-<h2 id="官方文档"><a href="#官方文档" class="headerlink" title="官方文档"></a>官方文档</h2><ul>
-<li><a target="_blank" rel="noopener" href="https://kubernetes.io/docs/tasks/administer-cluster/memory-manager/">Utilizing the NUMA-aware Memory Manager</a></li>
-<li><a target="_blank" rel="noopener" href="https://github.com/kubernetes/enhancements/tree/master/keps/sig-node/1769-memory-manager#kep-1769-memory-manager">KEP-1769: Memory Manager</a></li>
-</ul>
-<h2 id="核心思路"><a href="#核心思路" class="headerlink" title="核心思路"></a>核心思路</h2><p>实现了<a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/tree/release-1.24/pkg/kubelet/cm/memorymanager">MemoryManager</a>，MemoryManger提供的主要功能是：</p>
+        <h1 id="通用部分"><a href="#通用部分" class="headerlink" title="通用部分"></a>通用部分</h1><p>本文主要介绍CPU拓扑相关的内容。一张主板上可能有一个或者两个CPU插槽，称为socket；而在一个CPU下可能又会有进一步的拓扑结构，将一个CPU又分成了一个或者多个NUMA。</p>
+<h1 id="Intel"><a href="#Intel" class="headerlink" title="Intel"></a>Intel</h1><h2 id="CPU的基本构造"><a href="#CPU的基本构造" class="headerlink" title="CPU的基本构造"></a>CPU的基本构造</h2><p>以Intel i9 9900K为例，基本构造：</p>
 <ul>
-<li>对于一个给定内存需求的容器，确定其内存分配到哪几个NUMA上</li>
-<li>决策结果的持久化，因为kubelet可能会重启</li>
-<li>查询容器的内存分配结果</li>
-<li>…</li>
+<li>一颗CPU内有8个Core，每个Core都有一个Ring Stop，多个Core之间通过Ring总线进行通信</li>
+<li>每个Core有2MB的L3 Cache，物理上隔离，逻辑上共同组成了16 MB L3 Cache</li>
+<li>CPU通过DMI（Direct Media Interface）和 PCH（Platform Controller Hub）相连，PCH又连接了USB、PCIE等</li>
+<li>CPU通过IMC（Integrated Memory Controller）访问内存，内存控制器有两个通道，单通道可以连接两个DIMM<br><img src="/cpu-topology/cpu-and-pch.jpg" alt="i9 9900K"></li>
 </ul>
-<p>MemoryManger的核心是<a target="_blank" rel="noopener" href="https://github.com/kubernetes/kubernetes/blob/release-1.24/pkg/kubelet/cm/memorymanager/policy.go">Policy</a>，用于决策怎么给QOS为Guaranteed并且内存需求的内存资源为整数MB的容器分配内存。Static policy核心Allocate算法可以概括为：</p>
+<h2 id="多CPU"><a href="#多CPU" class="headerlink" title="多CPU"></a>多CPU</h2><p>为了提升单机算力，一张主板上设计了多个socket，插入多个CPU。与单socket相比，CPU上多了QPI，用于多CPU互联。每个CPU有自己的IMC，如果一颗CPU要访问另一颗CPU下的内存，需要跨过QPI。<br><img src="/cpu-topology/mulit-socket-single-die.jpg" alt="Xeon E5-2623V3"></p>
+<h2 id="Cluster-on-Die"><a href="#Cluster-on-Die" class="headerlink" title="Cluster on Die"></a>Cluster on Die</h2><p>单CPU核数越来越多，造成Die体积越来越大，良品率降低，为此设计了Cluster on Die架构，即一颗CPU内有多个Die，按照Die将CPU划分成多个Cluster。两个Die之间通过Sbox连接，Sbox为Cache Agent Bridge，是一张Ring stop。<br><img src="/cpu-topology/cluster-on-die.jpg" alt="Cluster on Die"></p>
+<h1 id="AMD"><a href="#AMD" class="headerlink" title="AMD"></a>AMD</h1><h2 id="多Die设计：MCM"><a href="#多Die设计：MCM" class="headerlink" title="多Die设计：MCM"></a>多Die设计：MCM</h2><p>AMD多Die设计称为MCM（Multichip module），多个Die之间通过Infinite fabric技术互联（AMD多socket之间也通过infinite fabric互联）。如图，一个CPU下有四个Die，每个Die内有8个核。</p>
+<p><img src="/cpu-topology/mutichip-module.jpg" alt="Multichip Module"></p>
+<p>MCM逻辑视图：</p>
+<p><img src="/cpu-topology/mcm-logic-view.jpg" alt="MCM logic view"></p>
+<p>基本结构为：</p>
 <ul>
-<li>对于一个具有n个NUMA节点的主机来说，这n个节点可能会有n*(n-1)种组合，分别为[[0],…,[n],[0,1],…[n-1,n],…,[0,1,…,n]]，最终内存分配的结果是其中一种</li>
-<li>对于其中的每个组合，判断其中各个NUMA节点的Allocatable内存之和是否可以满足容器的内存需求，如果可以满足，则将其视为一种可能的组合</li>
-<li>对于所有可能的组合，将其中NUMA节点最少的组合记为preferred</li>
-<li>从preferred组合种寻找best hint，判断的规则是其NUMA id排序最小</li>
-<li>选出best hint后，需要判断best hint是否可以满足所有内存资源需求。如果不是，则需要扩大hint范围，扩展的策略是筛选出所有包含best hint的hint，并再此选出其中最优的</li>
-<li>如果以上决策出的hint中包含多个NUMA node，那么这几个NUMA node被视为位于一个cell，之后这几个NUMA node都不能单独提供内存，也不能再加入其他的cell</li>
+<li>一个板上有多个socket，多个socket之间通过infinite fabric连接</li>
+<li>一个socket内又有多个Die，多个Die之间通过infinite fabric连接</li>
+<li>一个Die内可能有多个CCD，也可能没有，要看是第几代架构</li>
+<li>一个CCD内有多个CCX</li>
+<li>一个CCX内有多个核，多个核共享L3 Cache</li>
+<li>一个核内2个thread，共享L2 Cache</li>
 </ul>
-<p>一些特性：</p>
+<h1 id="MCM下的NUMA结构"><a href="#MCM下的NUMA结构" class="headerlink" title="MCM下的NUMA结构"></a>MCM下的NUMA结构</h1><p>MCM下CPU有多个Die，Die可能又有多个CCD，每个CCD访问自己的内存通道速度快，访问其他CCD较慢。而MCM下NUMA划分即是选择将哪些内存通道进行交织。NUMA node划分的粒度越细，单个node下内存访问平均延迟越低。通过配置Node Per Socket来决定在什么粒度上进行NUMA划分：</p>
 <ul>
-<li>Policy的Allocate接口是幂等的</li>
-<li>对于一个pod来说，init container的内存是可以被后续的容器所使用的</li>
+<li>NPS0:只有一个NUMA，仅对2-socket有效</li>
+<li>NPS1:一个CPU划分成一个NUMA</li>
+<li>NPS2:CPU划分成两个NUMA，每个NUMA四个通道交织</li>
+<li>NPS4:CPU划分成四个NUMA，每个象限是一个NUMA域</li>
+<li>Last-Level Cache(L3) as NUMA node：每个L3域（其实就是CCX）作为一个NUMA node</li>
 </ul>
 
     </div>
@@ -245,7 +256,8 @@
 
       <footer class="post-footer">
           <div class="post-tags">
-              <a href="/tags/Kubernetes/" rel="tag"># Kubernetes</a>
+              <a href="/tags/NUMA/" rel="tag"># NUMA</a>
+              <a href="/tags/Topology/" rel="tag"># Topology</a>
           </div>
 
         
@@ -254,13 +266,10 @@
         
     <div class="post-nav">
       <div class="post-nav-item">
-    <a href="/2025/08/01/linux-commands/" rel="prev" title="Linux commands">
-      <i class="fa fa-chevron-left"></i> Linux commands
+    <a href="/2025/10/18/kubernetes-concepts/" rel="prev" title="Kubernetes concepts">
+      <i class="fa fa-chevron-left"></i> Kubernetes concepts
     </a></div>
-      <div class="post-nav-item">
-    <a href="/2025/09/02/golang-interface/" rel="next" title="Golang interface best practice">
-      Golang interface best practice <i class="fa fa-chevron-right"></i>
-    </a></div>
+      <div class="post-nav-item"></div>
     </div>
       </footer>
     
@@ -319,7 +328,7 @@
 
       <!--noindex-->
       <div class="post-toc-wrap sidebar-panel">
-          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AE%98%E6%96%B9%E6%96%87%E6%A1%A3"><span class="nav-number">1.</span> <span class="nav-text">官方文档</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%A0%B8%E5%BF%83%E6%80%9D%E8%B7%AF"><span class="nav-number">2.</span> <span class="nav-text">核心思路</span></a></li></ol></div>
+          <div class="post-toc motion-element"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%80%9A%E7%94%A8%E9%83%A8%E5%88%86"><span class="nav-number">1.</span> <span class="nav-text">通用部分</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Intel"><span class="nav-number">2.</span> <span class="nav-text">Intel</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU%E7%9A%84%E5%9F%BA%E6%9C%AC%E6%9E%84%E9%80%A0"><span class="nav-number">2.1.</span> <span class="nav-text">CPU的基本构造</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9ACPU"><span class="nav-number">2.2.</span> <span class="nav-text">多CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Cluster-on-Die"><span class="nav-number">2.3.</span> <span class="nav-text">Cluster on Die</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#AMD"><span class="nav-number">3.</span> <span class="nav-text">AMD</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%A4%9ADie%E8%AE%BE%E8%AE%A1%EF%BC%9AMCM"><span class="nav-number">3.1.</span> <span class="nav-text">多Die设计：MCM</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#MCM%E4%B8%8B%E7%9A%84NUMA%E7%BB%93%E6%9E%84"><span class="nav-number">4.</span> <span class="nav-text">MCM下的NUMA结构</span></a></li></ol></div>
       </div>
       <!--/noindex-->
 
