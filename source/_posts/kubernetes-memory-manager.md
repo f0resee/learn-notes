@@ -2,6 +2,7 @@
 title: Kubernetes NUMA-aware Memory Manager
 date: 2025-08-07 21:37:07
 tags: Kubernetes
+categories: Topology
 ---
 对于具有多个NUMA节点的Intel CPU，CPU访问所属NUMA节点下的内存延迟更低，跨NUMA访问内存时延迟较高，对于一些性能敏感的应用来说，如果能够确保应用只访问本地内存，或者尽可能少出现跨NUMA访问，可以显著提高应用性能。因此k8s内引入了内存管理器，其目标是：
 1. 保障容器分配到足够多的可用内存，并且内存分布于尽可能少的NUMA节点上
