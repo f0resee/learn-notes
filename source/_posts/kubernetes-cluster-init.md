@@ -102,13 +102,17 @@ net.ipv4.ip_forward                 = 1
 EOF
 
 # Apply sysctl params without reboot
-sudo sysctl --system
+sysctl --system
 
 kubeadm config images pull --image-repository registry.aliyuncs.com/google_containers
 
 vim /etc/containerd/config.toml # sandbox : registry.aliyuncs.com/google_containers/pause:3.9
 
-sudo kubeadm init --pod-network-cidr=10.244.0.0/16 --image-repository registry.aliyuncs.com/google_containers
+# init control plane
+kubeadm init --pod-network-cidr=10.244.0.0/16 --image-repository registry.aliyuncs.com/google_containers
+
+# get join command
+kubeadm token create --print-join-command
 
 wget https://github.com/flannel-io/flannel/releases/latest/download/kube-flannel.yml
 kubectl apply -f kube-flannel.yml

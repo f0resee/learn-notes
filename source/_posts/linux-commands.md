@@ -23,6 +23,15 @@ atop -b 202510301937 -r /var/log/atop/atop_20251030
 free
 ```
 
+## disk
+```shell
+fdisk
+# d: delete
+# n: new
+# w: write
+resize2fs
+```
+
 ## process
 ```shell
 # 列出所有进程
