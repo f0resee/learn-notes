@@ -5,6 +5,21 @@ tags: [Kubernetes]
 categories: Kubernetes
 ---
 
+# 日志
+## kubelet
+如果是systemd部署，通过journalctl工具查看日志。
+## kube-apiserver
+/var/log/containers/kube-apiserver-xxx
+
+# 证书过期
+
+```sh
+kubeadm certs renew all
+systectl restart kubelet
+kubeadm init phase kubeconfig admin
+cp /etc/kubernetes/admin.conf ~/.kube/config
+```
+
 # kubelet
 ## kubelet systemd service
 在node上，kubelet是一个systemd拉起的service，可以通过`systemctl status kubelet.service`查看相关信息。两个比较重要的文件：
@@ -13,8 +28,10 @@ categories: Kubernetes
 + /etc/systemd/system/kubelet.service.d/10-kubeadm.conf
 
 其中第二个文件中的内容会对第一个文件进行部分覆盖，因此完整的启动命令其实取决于这两个文件。
+
 ## kubelet配置文件
 + /var/lib/kubelet/config.yaml
+
 ## 功能配置
 Pod Qos:
 
