@@ -193,6 +193,7 @@ kind: Pod
 apiVersion: v1
 metadata:
   name: mynginx
+spec:
   containers:
     - name: mynginx
       image: nginx
@@ -213,27 +214,7 @@ spec:
     name: tomcat
 ```
 ### 2. Deployment
-```yaml
-apiVersion: apps/v1
-kind: Deployment
-metadata:
-  name: my-dep
-  labels:
-    app: my-dep
-spec:
-  replicas: 3
-  selector:
-    matchLabels:
-      app: my-dep
-  template:
-    metadata:
-      labels:
-        app: my-dep
-    spec:
-      containers:
-      - name: nginx
-        image: nginx
-```
+
 ### 3. Service
 ```bash
 kubectl expose deployment my-dep --port=8000 --target-port=80 --type=ClusterIP

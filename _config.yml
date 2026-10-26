@@ -107,4 +107,4 @@ deploy:
   type: 'git'
   repo: 'git@github.com:f0resee/f0resee.github.io.git'
   branch: 'main'
-  message: 'add linux load'
+  message: 'add k8s examples'
