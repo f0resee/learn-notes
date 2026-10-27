@@ -2,10 +2,20 @@
 title: Kubernetes examples
 date: 2026-01-10 20:22:23
 tags: [Kubernetes]
-categories: Kubernetes
+categories: [Kubernetes]
 ---
 
-# 1. Pod
+# Pod
+```sh
+kubectl get pod -A
+kubectl get pod -n test  
+kubectl get pods -A -o wide
+kubectl describe pod mynginx -n test
+kubectl logs mynginx -n test
+kubectl exec -it mynginx -n test -- /bin/bash
+kubectl exec -it mynginx -n test -c nginx -- /bin/bash
+```
+
 ```yaml
 apiVersion: v1
 kind: Pod
@@ -16,7 +26,28 @@ spec:
   - image: nginx:1.31.8
     name: nginx
 ```
-# 2. Deployment
+# ReplicaSet
+```yaml
+apiVersion: apps/v1 
+kind: ReplicaSet
+metadata:
+  name: my-replicaset
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: my-nginx
+  template:   
+    metadata: 
+      labels:  
+        app: my-nginx 
+    spec:
+      containers:
+        - name: nginx
+          image: nginx:1.31.8
+```
+
+# 3. Deployment
 ```yaml
 apiVersion: apps/v1 
 kind: Deployment
@@ -36,6 +67,6 @@ spec:
         - name: nginx
           image: nginx:1.31.8
 ```
-# 3. Service
-# 4. Ingress
-# 5. CRD
+# Service
+# Ingress
+# CRD
