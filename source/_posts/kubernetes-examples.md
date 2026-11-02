@@ -47,7 +47,7 @@ spec:
           image: nginx:1.31.8
 ```
 
-# 3. Deployment
+# Deployment
 ```yaml
 apiVersion: apps/v1 
 kind: Deployment
@@ -67,6 +67,52 @@ spec:
         - name: nginx
           image: nginx:1.31.8
 ```
+
 # Service
+```bash
+kubectl expose deployment my-dep --port=8000 --target-port=80 --type=ClusterIP
+```
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-dep
+  name: my-dep
+spec:
+  selector:
+    app: my-dep
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 80
+```
+
+```bash
+curl 10.98.164.10:8000
+curl my-dep.default.svc:8000
+```
+
+```
+kubectl expose deployment my-dep --port=8000 --target-port=80 --type=NodePort
+```
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: my-dep
+  name: my-dep
+spec:
+  ports:
+  - port: 8000
+    protocol: TCP
+    targetPort: 80
+  selector:
+    app: my-dep
+  type: NodePort
+```
+
 # Ingress
 # CRD
